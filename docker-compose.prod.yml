@@ -1,0 +1,73 @@
+version: '3.7'
+services:
+  formail:
+    image: registry.gitlab.com/aakado/formail:latest
+    networks:
+      - traefik
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik"
+        - "traefik.http.routers.formail_prod.rule=Host(`formail.dev`)"
+        - "traefik.http.routers.formail_prod.tls.certresolver=http"
+        - "traefik.http.routers.formail_prod.entrypoints=https"
+        - "traefik.http.routers.formail_prod_insecure.rule=Host(`formail.dev`)"
+        - "traefik.http.routers.formail_prod_insecure.middlewares=autohttps@file"
+        - "traefik.http.routers.formail_prod_insecure.entrypoints=http"
+        - "traefik.http.services.formail_prod.loadbalancer.server.port=80"
+    environment:
+      - APP_NAME=Formail
+      - APP_ENV=production
+      - APP_KEY=
+      - APP_DEBUG=false
+      - APP_URL=https://formail.dev
+      - LOG_CHANNEL=stack
+      - DB_CONNECTION=pgsql
+      - DB_HOST=
+      - DB_PORT=
+      - DB_DATABASE=formail
+      - DB_USERNAME=
+      - DB_PASSWORD=
+      - BROADCAST_DRIVER=log
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - QUEUE_DRIVER=redis
+      - REDIS_HOST=
+      - REDIS_PASSWORD=
+      - REDIS_PORT=6379
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST=
+      - MAIL_PORT=
+      - MAIL_USERNAME=
+      - MAIL_PASSWORD=
+      - MAIL_ENCRYPTION=
+      - MAIL_FROM_ADDRESS=
+      - MAIL_FROM_NAME="${APP_NAME}"
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_BUCKET=
+      - PUSHER_APP_ID=
+      - PUSHER_APP_KEY=
+      - PUSHER_APP_SECRET=
+      - PUSHER_APP_CLUSTER=mt1
+      - MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+      - MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+  redis:
+    image: redis:5-alpine
+    command: redis-server --requirepass 
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: 
+      POSTGRES_Db: formail
+      POSTGRES_PASSWORD: 
+    volumes:
+      - db:/var/lib/postgressql/data
+volumes:
+  db:
+networks:
+  traefik:
+    external: true
