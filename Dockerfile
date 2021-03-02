@@ -1,7 +1,7 @@
 FROM php:7.4-apache
 RUN apt-get update \
   && apt-get install -y --no-install-recommends zip libzip-dev libpq-dev \
-  && docker-php-ext-configure zip --with-libzip \
+  && docker-php-ext-configure zip \
   && docker-php-ext-install pdo bcmath ctype json zip pdo_pgsql
 COPY --from=composer:1.9 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html/
