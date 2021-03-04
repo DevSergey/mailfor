@@ -1,0 +1,56 @@
+site_name: Formail
+site_description: API-Backend to validate and forward form data from client-side only webappications.
+site_author: Dominik Strässle
+repo_name: dominikstraessle/formail
+repo_url: https://gitlab.com/aakado/formail
+edit_uri: https://gitlab.com/-/ide/project/aakado/formail/edit/master/-/
+theme:
+  name: 'material'
+  logo: assets/email-send-outline.png
+  static_templates:
+    - 404.html
+  include_search_page: false
+  search_index_only: true
+  language: en
+  feature:
+    tabs: false
+  palette:
+    primary: black
+    accent: red
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: docker.png
+plugins:
+  - search
+  - minify:
+      minify_html: true
+markdown_extensions:
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+nav:
+  - 'Welcome': 'index.md'
+  - 'Projekt':
+      - 'Projektantrag': 'projektantrag.md'
