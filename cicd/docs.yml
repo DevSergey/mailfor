@@ -1,5 +1,5 @@
 pages:
-  stage: docs
+  stage: build
   script:
     - docker run --rm -v ${PWD}:/docs squidfunk/mkdocs-material build -d public
   artifacts:
