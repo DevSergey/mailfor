@@ -1,6 +1,5 @@
 <?php
 namespace App;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
@@ -10,9 +9,17 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'admin', 'remember_token',
     ];
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function credentials()
+    {
+        return $this->hasMany(Credential::class)->latest('updated_at');
+    }
+    public function validations()
+    {
+        return $this->hasMany(Validation::class)->latest('updated_at');
+    }
 }
