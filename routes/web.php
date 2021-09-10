@@ -23,6 +23,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/validations/{validation}', 'ValidationController@show');
     Route::delete('/validations/{validation}', 'ValidationController@destroy');
     Route::patch('/validations/{validation}', 'ValidationController@update');
+    Route::get('/receivers/create', 'ReceiverController@create');
+    Route::post('/receivers', 'ReceiverController@store');
+    Route::get('/receivers', 'ReceiverController@index')->name('receivers');
+    Route::get('/receivers/{receiver}', 'ReceiverController@show');
+    Route::delete('/receivers/{receiver}', 'ReceiverController@destroy');
+    Route::patch('/receivers/{receiver}', 'ReceiverController@update');
     Route::group([], function () {
         Route::get('/users', 'UserController@index')->name('users');
         Route::delete('/users/{user}', 'UserController@destroy');

@@ -22,4 +22,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Validation::class)->latest('updated_at');
     }
+    public function receivers()
+    {
+        return $this->hasMany(Receiver::class)->latest('updated_at');
+    }
 }

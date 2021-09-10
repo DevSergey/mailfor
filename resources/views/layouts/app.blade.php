@@ -42,6 +42,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('validations') }}">Validations</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('receivers') }}">Receivers</a>
+                        </li>
                         @if(Auth::user()->admin)
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('users') }}">Users</a>
