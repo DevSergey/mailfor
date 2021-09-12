@@ -29,6 +29,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/receivers/{receiver}', 'ReceiverController@show');
     Route::delete('/receivers/{receiver}', 'ReceiverController@destroy');
     Route::patch('/receivers/{receiver}', 'ReceiverController@update');
+    Route::get('/endpoints/create', 'EndpointController@create');
+    Route::post('/endpoints', 'EndpointController@store');
+    Route::get('/endpoints', 'EndpointController@index')->name('endpoints');
+    Route::get('/endpoints/{endpoint}', 'EndpointController@show');
+    Route::delete('/endpoints/{endpoint}', 'EndpointController@destroy');
+    Route::patch('/endpoints/{endpoint}', 'EndpointController@update');
     Route::group([], function () {
         Route::get('/users', 'UserController@index')->name('users');
         Route::delete('/users/{user}', 'UserController@destroy');

@@ -2,7 +2,7 @@
 @section('content')
     <header class="container d-flex justify-content-between mb-4">
         <h4>My Validations</h4>
-        <a class="btn bg-primary" href="/receivers/create">Create Receiver</a>
+        <a class="btn bg-primary" href="/endpoints/create">Create Receiver</a>
     </header>
     <main>
         <div class="container">
@@ -14,26 +14,26 @@
                             <th scope="col">Edit</th>
                             <th scope="col">Delete</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Email</th>
+                            <th scope="col">Access-Control-Allow-Origin</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($receivers as $receiver)
+                        @foreach($endpoints as $endpoint)
                             <tr>
                                 <td>
-                                    <a href="/receivers/{{$receiver->id}}">
+                                    <a href="/endpoints/{{$endpoint->id}}">
                                         <button type="submit" class="btn btn-success btn-sm">Edit</button>
                                     </a>
                                 </td>
                                 <td>
-                                    <form method="POST" action="/receivers/{{$receiver->id}}">
+                                    <form method="POST" action="/endpoints/{{$endpoint->id}}">
                                         @method('DELETE')
                                         @csrf
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 </td>
-                                <td>{{$receiver->name}}</td>
-                                <td>{{$receiver->email}}</td>
+                                <td>{{$endpoint->name}}</td>
+                                <td>{{$endpoint->cors_origin}}</td>
                             </tr>
                         @endforeach
                         </tbody>

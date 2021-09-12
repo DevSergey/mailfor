@@ -105,6 +105,7 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
     'infectedkeyword' => 'The :attribute contains permitted validation rules',
+    'cors_origin' => 'The :attribute has to be either a wildcard "*" or an url.',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

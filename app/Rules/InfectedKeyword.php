@@ -4,7 +4,7 @@ use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Str;
 class InfectedKeyword implements Rule
 {
-    protected $forbiddenValidationTerms = [
+    protected array $forbiddenValidationTerms = [
         'unique', 'exists', 'password', 'active_url'
     ];
     public function __construct()
@@ -18,5 +18,9 @@ class InfectedKeyword implements Rule
     public function message()
     {
         return trans('validation.infectedkeyword');
+    }
+    public function getForbiddenValidationTerms(): array
+    {
+        return $this->forbiddenValidationTerms;
     }
 }

@@ -26,4 +26,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Receiver::class)->latest('updated_at');
     }
+    public function endpoints()
+    {
+        return $this->hasMany(Endpoint::class)->latest('updated_at');
+    }
 }
