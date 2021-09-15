@@ -13,7 +13,7 @@
     @include('form._form-element', [
 'field'=>'cors_origin',
 'text' => 'Access-Control-Allow-Origin',
-'placeholder'=>'example@mail.com',
+'placeholder'=>'https://formail.dev',
 'value'=> $endpoint->cors_origin,
 'description'=> 'The Access-Control-Allow-Origin header.',
 'error_message'=> 'Access-Control-Allow-Origin was invalid.',

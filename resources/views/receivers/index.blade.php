@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <header class="container d-flex justify-content-between mb-4">
-        <h4>My Validations</h4>
+        <h4>My Receivers</h4>
         <a class="btn bg-primary" href="/receivers/create">Create Receiver</a>
     </header>
     <main>

@@ -37,6 +37,9 @@
                         @endif
                     @else
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('endpoints') }}">Endpoints</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('credentials') }}">Credentials</a>
                         </li>
                         <li class="nav-item">

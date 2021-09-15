@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <header class="container d-flex justify-content-between mb-4">
-        <h4>My Validations</h4>
-        <a class="btn bg-primary" href="/endpoints/create">Create Receiver</a>
+        <h4>My Endpoints</h4>
+        <a class="btn bg-primary" href="/endpoints/create">Create Endpoint</a>
     </header>
     <main>
         <div class="container">
