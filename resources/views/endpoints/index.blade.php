@@ -15,6 +15,10 @@
                             <th scope="col">Delete</th>
                             <th scope="col">Name</th>
                             <th scope="col">Access-Control-Allow-Origin</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Monthly Limit</th>
+                            <th scope="col">Client Limit</th>
+                            <th scope="col">Time Unit</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -34,6 +38,10 @@
                                 </td>
                                 <td>{{$endpoint->name}}</td>
                                 <td>{{$endpoint->cors_origin}}</td>
+                                <td>{{$endpoint->subject}}</td>
+                                <td>{{$endpoint->monthly_limit}}</td>
+                                <td>{{$endpoint->client_limit}}</td>
+                                <td>{{$endpoint->time_unit}}</td>
                             </tr>
                         @endforeach
                         </tbody>

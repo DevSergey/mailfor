@@ -15,6 +15,10 @@ class ManageEndpointsTest extends TestCase
         $endpoint = [
             'name' => 'name',
             'cors_origin' => 'https:
+            'subject' => 'The subject of the mail',
+            'monthly_limit' => 1000,
+            'client_limit' => 2,
+            'time_unit' => 'hour'
         ];
         $response = $this->post('/endpoints', $endpoint);
         $endpoint['user_id'] = $user->id;
@@ -29,7 +33,11 @@ class ManageEndpointsTest extends TestCase
         $this->signIn();
         $endpoint = [
             'name' => '',
-            'cors_origin' => 'inv$lid.url'
+            'cors_origin' => 'indalid.url',
+            'subject' => '',
+            'monthly_limit' => -1,
+            'client_limit' => -1,
+            'time_unit' => 'not a time unit'
         ];
         $response = $this->post('/endpoints', $endpoint);
         $response->assertSessionHasErrors([
@@ -103,6 +111,10 @@ class ManageEndpointsTest extends TestCase
         $changedEndpoint = [
             'name' => 'name',
             'cors_origin' => 'https:
+            'subject' => 'The subject of the mail',
+            'monthly_limit' => 1000,
+            'client_limit' => 2,
+            'time_unit' => 'hour'
         ];
         $path = '/endpoints/' . $endpoint->id;
         $this->actingAs($endpoint->user)
@@ -115,7 +127,11 @@ class ManageEndpointsTest extends TestCase
         $endpoint = factory(Endpoint::class)->create();
         $changedEndpoint = [
             'name' => '',
-            'cors_origin' => '$nvali.url',
+            'cors_origin' => 'indalid.url',
+            'subject' => '',
+            'monthly_limit' => -1,
+            'client_limit' => -1,
+            'time_unit' => 'not a time unit'
         ];
         $path = '/endpoints/' . $endpoint->id;
         $this->actingAs($endpoint->user)

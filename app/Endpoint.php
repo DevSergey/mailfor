@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 class Endpoint extends Model
 {
     protected $fillable = [
-        'name', 'cors_origin'
+        'name', 'cors_origin', 'subject', 'monthly_limit', 'client_limit', 'time_unit'
     ];
     protected $hidden = [];
     public function user()

@@ -2,8 +2,12 @@
 namespace App\Http\Controllers;
 use App\Endpoint;
 use App\Rules\CorsOrigin;
+use Illuminate\Validation\Rule;
 class EndpointController extends Controller
 {
+    protected array $validTimeUnits = [
+        'month', 'week', 'day', 'hour', 'minute'
+    ];
     public function create()
     {
         $endpoint = new Endpoint();
@@ -18,7 +22,11 @@ class EndpointController extends Controller
     {
         return request()->validate([
             'name' => ['required', 'max:255'],
-            'cors_origin' => ['required', new CorsOrigin]
+            'cors_origin' => ['required', new CorsOrigin],
+            'subject' => ['required', 'max:255'],
+            'monthly_limit' => ['numeric', 'min:0'],
+            'client_limit' => ['numeric', 'min:0'],
+            'time_unit' => ['string', Rule::in($this->validTimeUnits)]
         ]);
     }
     public function index()
