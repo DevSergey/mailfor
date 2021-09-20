@@ -106,6 +106,7 @@ return [
     'uuid' => 'The :attribute must be a valid UUID.',
     'infectedkeyword' => 'The :attribute contains permitted validation rules',
     'cors_origin' => 'The :attribute has to be either a wildcard "*" or an url.',
+    'entry_belongs_to_user' => 'The :attribute do not exist or do not belong to the authenticated user',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

@@ -1,5 +1,6 @@
 <?php
 namespace Tests\Feature;
+use App\Credential;
 use App\Endpoint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -12,13 +13,17 @@ class ManageEndpointsTest extends TestCase
         $user = $this->signIn();
         $this->get('/endpoints/create')
             ->assertOk();
+        $credential = factory(Credential::class)->create([
+            'user_id' => $user->id
+        ]);
         $endpoint = [
             'name' => 'name',
             'cors_origin' => 'https:
             'subject' => 'The subject of the mail',
             'monthly_limit' => 1000,
             'client_limit' => 2,
-            'time_unit' => 'hour'
+            'time_unit' => 'hour',
+            'credential_id' => $credential->id
         ];
         $response = $this->post('/endpoints', $endpoint);
         $endpoint['user_id'] = $user->id;
@@ -107,14 +112,21 @@ class ManageEndpointsTest extends TestCase
     }
     public function testUserCanUpdateHisEndpoints()
     {
-        $endpoint = factory(Endpoint::class)->create();
+        $user = $this->signIn();
+        $endpoint = factory(Endpoint::class)->create([
+            'user_id' => $user->id
+        ]);
+        $credential = factory(Credential::class)->create([
+            'user_id' => $user->id
+        ]);
         $changedEndpoint = [
             'name' => 'name',
             'cors_origin' => 'https:
             'subject' => 'The subject of the mail',
             'monthly_limit' => 1000,
             'client_limit' => 2,
-            'time_unit' => 'hour'
+            'time_unit' => 'hour',
+            'credential_id' => $credential->id
         ];
         $path = '/endpoints/' . $endpoint->id;
         $this->actingAs($endpoint->user)

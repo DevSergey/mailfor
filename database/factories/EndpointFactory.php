@@ -1,9 +1,11 @@
 <?php
+use App\Credential;
 use App\Endpoint;
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 $factory->define(Endpoint::class, function (Faker $faker) {
+    $user = factory(User::class)->create();
     return [
         'name' => $faker->sentence,
         'cors_origin' => $faker->url,
@@ -13,6 +15,9 @@ $factory->define(Endpoint::class, function (Faker $faker) {
         'time_unit' => $faker->randomElement([
             'month', 'week', 'day', 'hour', 'minute'
         ]),
-        'user_id' => factory(User::class)->create()
+        'user_id' => $user,
+        'credential_id' => factory(Credential::class)->create([
+            'user_id' => $user
+        ])
     ];
 });

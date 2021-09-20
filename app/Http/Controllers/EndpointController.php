@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Endpoint;
 use App\Rules\CorsOrigin;
+use App\Rules\EntryBelongsToUser;
 use Illuminate\Validation\Rule;
 class EndpointController extends Controller
 {
@@ -26,7 +27,8 @@ class EndpointController extends Controller
             'subject' => ['required', 'max:255'],
             'monthly_limit' => ['numeric', 'min:0'],
             'client_limit' => ['numeric', 'min:0'],
-            'time_unit' => ['string', Rule::in($this->validTimeUnits)]
+            'time_unit' => ['string', Rule::in($this->validTimeUnits)],
+            'credential_id' => ['exists:credentials,id', new EntryBelongsToUser('credentials')]
         ]);
     }
     public function index()

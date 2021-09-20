@@ -18,4 +18,8 @@ class Credential extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function endpoints()
+    {
+        return $this->hasMany(Endpoint::class)->latest('updated_at');
+    }
 }

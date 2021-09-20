@@ -15,11 +15,16 @@ class CreateEndpoints extends Migration
             $table->unsignedInteger('client_limit')->nullable();
             $table->string('time_unit')->default('minute');
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('credential_id');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+            $table->foreign('credential_id')
+                ->references('id')
+                ->on('credentials')
+                ->onDelete('restrict');
         });
     }
     public
