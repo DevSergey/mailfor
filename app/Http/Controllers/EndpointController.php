@@ -25,10 +25,10 @@ class EndpointController extends Controller
             'name' => ['required', 'max:255'],
             'cors_origin' => ['required', new CorsOrigin],
             'subject' => ['required', 'max:255'],
-            'monthly_limit' => ['numeric', 'min:0'],
-            'client_limit' => ['numeric', 'min:0'],
-            'time_unit' => ['string', Rule::in($this->validTimeUnits)],
-            'credential_id' => ['exists:credentials,id', new EntryBelongsToUser('credentials')]
+            'monthly_limit' => ['required', 'numeric', 'min:0'],
+            'client_limit' => ['required', 'numeric', 'min:0'],
+            'time_unit' => ['required', 'string', Rule::in($this->validTimeUnits)],
+            'credential_id' => ['required', 'exists:credentials,id', new EntryBelongsToUser('credentials')]
         ]);
     }
     public function index()

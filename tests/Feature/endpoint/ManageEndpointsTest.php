@@ -41,13 +41,29 @@ class ManageEndpointsTest extends TestCase
             'cors_origin' => 'indalid.url',
             'subject' => '',
             'monthly_limit' => -1,
-            'client_limit' => -1,
             'time_unit' => 'not a time unit'
         ];
         $response = $this->post('/endpoints', $endpoint);
         $response->assertSessionHasErrors([
-            'name', 'cors_origin'
+            'name', 'cors_origin', 'subject', 'monthly_limit', 'client_limit', 'time_unit', 'credential_id'
         ]);
+        $this->assertDatabaseMissing('endpoints', $endpoint);
+    }
+    public function testUsersCannotUseOthersCredentials()
+    {
+        $this->signIn();
+        $credential = factory(Credential::class)->create();
+        $endpoint = [
+            'name' => 'name',
+            'cors_origin' => 'https:
+            'subject' => 'The subject of the mail',
+            'monthly_limit' => 1000,
+            'client_limit' => 2,
+            'time_unit' => 'hour',
+            'credential_id' => $credential->id
+        ];
+        $this->post('/endpoints', $endpoint)
+            ->assertSessionHasErrors(['credential_id']);
         $this->assertDatabaseMissing('endpoints', $endpoint);
     }
     public function testUserCanViewAEndpoint()
@@ -142,14 +158,13 @@ class ManageEndpointsTest extends TestCase
             'cors_origin' => 'indalid.url',
             'subject' => '',
             'monthly_limit' => -1,
-            'client_limit' => -1,
             'time_unit' => 'not a time unit'
         ];
         $path = '/endpoints/' . $endpoint->id;
         $this->actingAs($endpoint->user)
             ->patch($path, $changedEndpoint)
             ->assertSessionHasErrors([
-                'name', 'cors_origin'
+                'name', 'cors_origin', 'subject', 'monthly_limit', 'client_limit', 'time_unit', 'credential_id'
             ]);
         $this->assertDatabaseHas('endpoints', [
             'name' => $endpoint->name,

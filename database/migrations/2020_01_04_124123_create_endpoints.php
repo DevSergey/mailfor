@@ -11,9 +11,9 @@ class CreateEndpoints extends Migration
             $table->string('name');
             $table->string('cors_origin');
             $table->string('subject');
-            $table->unsignedInteger('monthly_limit')->nullable();
-            $table->unsignedInteger('client_limit')->nullable();
-            $table->string('time_unit')->default('minute');
+            $table->unsignedInteger('monthly_limit');
+            $table->unsignedInteger('client_limit');
+            $table->string('time_unit');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('credential_id');
             $table->timestamps();
