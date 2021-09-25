@@ -58,3 +58,18 @@
 'additional_options'=>'required'
 ])
 </div>
+<div class="form-row">
+    <div class="col">
+        <label for="credential_id">Credential</label>
+        <select class="custom-select" name="credential_id" id="credential_id" required>
+            @foreach($credentials as $credential)
+                <option value="{{$credential->id}}"
+                        @if($credential->id === $endpoint->credential_id)selected="selected"
+                        @endif aria-describedby="credential_idHelp">{{$credential->name}}</option>
+            @endforeach
+        </select>
+        <small id="credential_idHelp" class="form-text text-muted">The credentials to send mails for this
+            endpoint</small>
+        <div class="invalid-feedback">Credential was invalid.</div>
+    </div>
+</div>

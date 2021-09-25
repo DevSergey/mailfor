@@ -12,7 +12,8 @@ class EndpointController extends Controller
     public function create()
     {
         $endpoint = new Endpoint();
-        return view('endpoints.create', compact('endpoint'));
+        $credentials = auth()->user()->credentials;
+        return view('endpoints.create', compact(['endpoint', 'credentials']));
     }
     public function store()
     {
@@ -41,7 +42,8 @@ class EndpointController extends Controller
         if (auth()->user()->isNot($endpoint->user)) {
             abort(403);
         }
-        return view('endpoints.show', compact('endpoint'));
+        $credentials = auth()->user()->credentials;
+        return view('endpoints.show', compact(['endpoint', 'credentials']));
     }
     public function destroy(Endpoint $endpoint)
     {

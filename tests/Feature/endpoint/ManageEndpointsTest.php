@@ -10,12 +10,10 @@ class ManageEndpointsTest extends TestCase
     public function testUserCanCreateEndpoints()
     {
         $this->withoutExceptionHandling();
-        $user = $this->signIn();
-        $this->get('/endpoints/create')
+        $credential = factory(Credential::class)->create();
+        $this->actingAs($credential->user)
+            ->get('/endpoints/create')
             ->assertOk();
-        $credential = factory(Credential::class)->create([
-            'user_id' => $user->id
-        ]);
         $endpoint = [
             'name' => 'name',
             'cors_origin' => 'https:
@@ -25,8 +23,9 @@ class ManageEndpointsTest extends TestCase
             'time_unit' => 'hour',
             'credential_id' => $credential->id
         ];
-        $response = $this->post('/endpoints', $endpoint);
-        $endpoint['user_id'] = $user->id;
+        $response = $this->actingAs($credential->user)
+            ->post('/endpoints', $endpoint);
+        $endpoint['user_id'] = $credential->user->id;
         $this->assertDatabaseHas('endpoints', $endpoint);
         $response->assertRedirect('/endpoints/' . Endpoint::where($endpoint)->first()->id);
         $this->get('/endpoints')
@@ -65,6 +64,26 @@ class ManageEndpointsTest extends TestCase
         $this->post('/endpoints', $endpoint)
             ->assertSessionHasErrors(['credential_id']);
         $this->assertDatabaseMissing('endpoints', $endpoint);
+    }
+    public function testUsersDontSeeOthersCredentialsInForms()
+    {
+        $foreignCredential = factory(Credential::class)->create();
+        $ownCredential = factory(Credential::class)->create();
+        $this->actingAs($ownCredential->user)
+            ->get('/endpoints/create')
+            ->assertOk()
+            ->assertDontSee($foreignCredential->name)
+            ->assertSee($ownCredential->name);
+        $user = $ownCredential->user;
+        $ownEndpoint = factory(Endpoint::class)->create([
+            'credential_id' => $ownCredential->id,
+            'user_id' => $user
+        ]);
+        $this->actingAs($ownCredential->user)
+            ->get('/endpoints/' . $ownEndpoint->id)
+            ->assertOk()
+            ->assertDontSee($foreignCredential->name)
+            ->assertSee($ownCredential->name);
     }
     public function testUserCanViewAEndpoint()
     {
