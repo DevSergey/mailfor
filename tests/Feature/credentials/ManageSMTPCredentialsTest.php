@@ -92,27 +92,6 @@ class ManageSMTPCredentialsTest extends TestCase
         $this->post('/credentials')
             ->assertRedirect('/login');
     }
-    public function testUserCanDeleteHisCredentials()
-    {
-        $credential = factory(Credential::class)->create();
-        $this->actingAs($credential->user)
-            ->delete('/credentials/' . $credential->id)
-            ->assertRedirect('/credentials');
-        $this->assertDatabaseMissing('credentials', [
-            'id' => $credential->id
-        ]);
-    }
-    public function testUserCannotDeleteOthersCredentials()
-    {
-        $this->signIn();
-        $credential = factory(Credential::class)->create();
-        $this
-            ->delete('/credentials/' . $credential->id)
-            ->assertStatus(403);
-        $this->assertDatabaseHas('credentials', [
-            'id' => $credential->id
-        ]);
-    }
     public function testUserCanUpdateHisCredentials()
     {
         $credential = factory(Credential::class)->create();

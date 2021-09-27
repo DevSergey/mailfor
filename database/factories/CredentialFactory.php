@@ -4,7 +4,7 @@ use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 $factory->define(Credential::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->sentence,
         'host' => $faker->domainName,
         'port' => $faker->numberBetween(0, 65535),
         'from_address' => $faker->safeEmail,

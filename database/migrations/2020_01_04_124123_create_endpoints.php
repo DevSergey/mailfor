@@ -24,7 +24,7 @@ class CreateEndpoints extends Migration
             $table->foreign('credential_id')
                 ->references('id')
                 ->on('credentials')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
         });
     }
     public
