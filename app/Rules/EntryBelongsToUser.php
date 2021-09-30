@@ -1,6 +1,8 @@
 <?php
 namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 class EntryBelongsToUser implements Rule
 {
     private string $table;
@@ -10,9 +12,16 @@ class EntryBelongsToUser implements Rule
     }
     public function passes($attribute, $value)
     {
+        Log::debug($value);
         $property = $this->table;
         if (isset(auth()->user()->$property)) {
-            return auth()->user()->$property->contains($value);
+            if (is_array($value) || $value instanceof Collection) {
+                foreach ($value as $valueItem) {
+                    return auth()->user()->$property->contains($valueItem);
+                }
+            } else {
+                return auth()->user()->$property->contains($value);
+            }
         } else {
             return false;
         }

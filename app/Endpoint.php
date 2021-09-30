@@ -1,6 +1,7 @@
 <?php
 namespace App;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Endpoint extends Model
 {
     protected $fillable = [
@@ -14,5 +15,9 @@ class Endpoint extends Model
     public function credential()
     {
         return $this->belongsTo(Credential::class);
+    }
+    public function receivers()
+    {
+        return $this->belongsToMany(Receiver::class)->withTimestamps();
     }
 }

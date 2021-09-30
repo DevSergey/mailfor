@@ -2,6 +2,8 @@
 namespace Tests\Feature;
 use App\Credential;
 use App\Endpoint;
+use App\Receiver;
+use Facades\Tests\Setup\EndpointFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 class UpdateEndpointTest extends TestCase
@@ -10,12 +12,10 @@ class UpdateEndpointTest extends TestCase
     public function testUserCanUpdateHisEndpoints()
     {
         $user = $this->signIn();
-        $endpoint = factory(Endpoint::class)->create([
-            'user_id' => $user->id
-        ]);
-        $credential = factory(Credential::class)->create([
-            'user_id' => $user->id
-        ]);
+        $endpoint = EndpointFactory::withUser($user)->withReceivers(2)->create();
+        $changedReceivers = factory(Receiver::class, 2)->create([
+            'user_id' => $user
+        ])->map(fn($receiver) => $receiver->id);
         $changedEndpoint = [
             'name' => 'name',
             'cors_origin' => 'https:
@@ -23,13 +23,22 @@ class UpdateEndpointTest extends TestCase
             'monthly_limit' => 1000,
             'client_limit' => 2,
             'time_unit' => 'hour',
-            'credential_id' => $credential->id
+            'credential_id' => factory(Credential::class)->create([
+                'user_id' => $user
+            ])->id,
+            'receivers' => $changedReceivers
         ];
         $path = '/endpoints/' . $endpoint->id;
-        $this->actingAs($endpoint->user)
-            ->patch($path, $changedEndpoint)
+        $this->patch($path, $changedEndpoint)
             ->assertRedirect($path);
+        unset($changedEndpoint['receivers']);
         $this->assertDatabaseHas('endpoints', $changedEndpoint);
+        foreach ($changedReceivers as $receiverId) {
+            $this->assertDatabaseHas('endpoint_receiver', [
+                'receiver_id' => $receiverId,
+                'endpoint_id' => Endpoint::where(['name' => $changedEndpoint['name']])->first()->id
+            ]);
+        }
     }
     public function testUpdateEndpointsIsValidated()
     {
@@ -65,5 +74,15 @@ class UpdateEndpointTest extends TestCase
             ->assertStatus(403);
         $this->assertDatabaseHas('endpoints', $endpoint->toArray());
         $this->assertDatabaseMissing('endpoints', $changedEndpoint);
+    }
+    public function testUsersCannotUseOthersReceivers()
+    {
+        $this->signIn();
+        $receivers = factory(Receiver::class, 3)->create()->map(fn($receiver) => $receiver->id);
+        $endpoint = [
+            'receivers' => $receivers
+        ];
+        $this->post('/endpoints', $endpoint)
+            ->assertSessionHasErrors('receivers');
     }
 }

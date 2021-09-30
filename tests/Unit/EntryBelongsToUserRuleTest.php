@@ -23,4 +23,20 @@ class EntryBelongsToUserRuleTest extends TestCase
         $rule = new EntryBelongsToUser('credentials');
         $this->assertFalse($rule->passes('credential_id', $credential->id));
     }
+    public function testValidEntryArrayPassesRule()
+    {
+        $user = $this->signIn();
+        $credential = factory(Credential::class, 3)->create([
+            'user_id' => $user
+        ]);
+        $rule = new EntryBelongsToUser('credentials');
+        $this->assertTrue($rule->passes('credential_id', $credential->map(fn($credential) => $credential->id)));
+    }
+    public function testInvalidEntryArrayFailsRule()
+    {
+        $this->signIn();
+        $credential = factory(Credential::class, 3)->create();
+        $rule = new EntryBelongsToUser('credentials');
+        $this->assertFalse($rule->passes('credential_id', $credential->map(fn($credential) => $credential->id)));
+    }
 }

@@ -17,7 +17,9 @@ class EndpointController extends Controller
     }
     public function store()
     {
-        $endpoint = auth()->user()->endpoints()->create($this->validateRequest());
+        $this->validateRequest();
+        $endpoint = auth()->user()->endpoints()->create(request(['name', 'cors_origin', 'subject', 'monthly_limit', 'client_limit', 'time_unit', 'credential_id']));
+        $endpoint->receivers()->attach(request('receivers'));
         return redirect('/endpoints/' . $endpoint->id);
     }
     protected function validateRequest()
@@ -29,7 +31,8 @@ class EndpointController extends Controller
             'monthly_limit' => ['required', 'numeric', 'min:0'],
             'client_limit' => ['required', 'numeric', 'min:0'],
             'time_unit' => ['required', 'string', Rule::in($this->validTimeUnits)],
-            'credential_id' => ['required', 'exists:credentials,id', new EntryBelongsToUser('credentials')]
+            'credential_id' => ['required', 'exists:credentials,id', new EntryBelongsToUser('credentials')],
+            'receivers' => ['required', new EntryBelongsToUser('receivers')]
         ]);
     }
     public function index()
@@ -58,7 +61,9 @@ class EndpointController extends Controller
         if (auth()->user()->isNot($endpoint->user)) {
             abort(403);
         }
-        $endpoint->update($this->validateRequest());
+        $this->validateRequest();
+        $endpoint->update(request(['name', 'cors_origin', 'subject', 'monthly_limit', 'client_limit', 'time_unit', 'credential_id']));
+        $endpoint->receivers()->attach(request('receivers'));
         return redirect('/endpoints/' . $endpoint->id);
     }
 }
