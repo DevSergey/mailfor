@@ -48,13 +48,16 @@ class UpdateEndpointTest extends TestCase
             'cors_origin' => 'indalid.url',
             'subject' => '',
             'monthly_limit' => -1,
-            'time_unit' => 'not a time unit'
+            'time_unit' => 'not a time unit',
+            'receivers' => [
+                'invalid'
+            ]
         ];
         $path = '/endpoints/' . $endpoint->id;
         $this->actingAs($endpoint->user)
             ->patch($path, $changedEndpoint)
             ->assertSessionHasErrors([
-                'name', 'cors_origin', 'subject', 'monthly_limit', 'client_limit', 'time_unit', 'credential_id'
+                'name', 'cors_origin', 'subject', 'monthly_limit', 'client_limit', 'time_unit', 'credential_id', 'receivers'
             ]);
         $this->assertDatabaseHas('endpoints', [
             'name' => $endpoint->name,
