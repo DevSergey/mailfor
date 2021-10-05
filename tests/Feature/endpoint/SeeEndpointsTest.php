@@ -2,6 +2,8 @@
 namespace Tests\Feature;
 use App\Credential;
 use App\Endpoint;
+use App\Receiver;
+use Facades\Tests\Setup\EndpointFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 class SeeEndpointsTest extends TestCase
@@ -26,6 +28,24 @@ class SeeEndpointsTest extends TestCase
             ->assertOk()
             ->assertDontSee($foreignCredential->name)
             ->assertSee($ownCredential->name);
+    }
+    public function testUsersDontSeeOthersReceiversInForms()
+    {
+        $this->withoutExceptionHandling();
+        $foreignReceiver = factory(Receiver::class)->create();
+        $ownReceiver = factory(Receiver::class)->create();
+        $this->actingAs($ownReceiver->user)
+            ->get('/endpoints/create')
+            ->assertOk()
+            ->assertDontSee($foreignReceiver->name)
+            ->assertSee($ownReceiver->name);
+        $user = $ownReceiver->user;
+        $ownEndpoint = EndpointFactory::withUser($user)->create();
+        $this->actingAs($user)
+            ->get('/endpoints/' . $ownEndpoint->id)
+            ->assertOk()
+            ->assertDontSee($foreignReceiver->name)
+            ->assertSee($ownReceiver->name);
     }
     public function testUserCanViewAEndpoint()
     {

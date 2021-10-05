@@ -72,10 +72,17 @@
             endpoint</small>
         <div class="invalid-feedback">Credential was invalid.</div>
     </div>
-    <select class="custom-select" multiple name="test">
-        <option selected>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
+    <div class="col">
+        <label for="receivers">Credential</label>
+        <select class="custom-select" multiple name="receivers[]" id="receivers" required>
+            @foreach($receivers as $receiver)
+                <option value="{{$receiver->id}}"
+                        @if($endpoint->receivers->contains($receiver->id))selected="selected"
+                        @endif aria-describedby="receiversHelp">{{$receiver->name}}</option>
+            @endforeach
+        </select>
+        <small id="receiversHelp" class="form-text text-muted">The receivers who should receive the incoming
+            requests.</small>
+        <div class="invalid-feedback">Receivers was invalid.</div>
+    </div>
 </div>

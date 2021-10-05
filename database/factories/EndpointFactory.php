@@ -18,6 +18,6 @@ $factory->define(Endpoint::class, function (Faker $faker) {
         'user_id' => $user,
         'credential_id' => factory(Credential::class)->create([
             'user_id' => $user
-        ])
+        ])->id
     ];
 });
